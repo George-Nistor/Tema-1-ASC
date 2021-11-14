@@ -7,8 +7,8 @@
 
 	formatScanf: .asciz "%s"
 	formatPrintf: .asciz "%s\n"
-
-	trei: .long 3
+	
+	identificator: .space 3
 	indexCurrent: .long 0
 	count: .long 0
 .text
@@ -73,25 +73,56 @@ et_counter:
 	jmp et_for
 	
 et_resetCurrent:
-	pushl %ecx
+	pushl %ecx #1
 	
-	pushl $current
-	pushl $formatPrintf
-	call printf
-	popl %ebx
+	pushl %edi #2
+	pushl %esi #3
+	
+	movl $current, %edi
+	movl $identificator, %esi
+	mov $1, %ecx	
+	movb (%edi, %ecx, 1), %bl
+	mov $0, %ecx
+	movb %bl, (%esi, %ecx, 1)
+	mov $2, %ecx
+	movb (%edi, %ecx, 1), %bl
+	mov $1, %ecx
+	movb %bl, (%esi, %ecx, 1)
+	
+	pushl $identificator
+	call atoi
 	popl %ebx
 	
+	popl %esi #3
+	popl %edi #2
+	
+	cmp $0, %eax
+	je currentNr
+	cmp $1, %eax	
+	je currentVar
+	cmp $10, %eax
+	je currentOp	
+	
+back_resetCurrent:
 	pushl $strEmpty
 	pushl $current
 	call strcpy
 	popl %ebx
 	popl %ebx
 	
-	popl %ecx
+	popl %ecx #1
 	
 	movl $0, indexCurrent
 	movl $0, count
-	jmp et_for	
+	jmp et_for
+	
+currentNr:
+	jmp back_resetCurrent
+currentVar:
+
+	jmp back_resetCurrent
+currentOp:
+	jmp back_resetCurrent
 
 cifra_0:
 	pushl %ecx
