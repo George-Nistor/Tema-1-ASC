@@ -1,7 +1,7 @@
 //cerinta1
 .data
 	input: .space 100
-	current: .space 12
+	current: .space 15
 	
 	strEmpty: .asciz ""
 	strSpace: .asciz " "
@@ -20,8 +20,7 @@
 	
 	
 	identificator: .space 3
-	identificator_var: .space 10
-	identificator_op: .long 0
+	identOp: .space 5
 	indexCurrent: .long 0
 	count: .long 0
 	nrB10: .long 0
@@ -31,7 +30,6 @@
 .global main
 
 main:
-	//scanf("%s", &input)
 	pushl $input 
 	pushl $formatScanf
 	call scanf
@@ -79,18 +77,18 @@ et_for:
 	cmp $70, %al
 	je cifra_F
 
-et_counter:
+counter:
 	incl %ecx
 	incl count
 	cmp $3, count
-	je et_resetCurrent
+	je resetCurrent
 	jmp et_for
 	
-et_resetCurrent:
-	pushl %ecx #1
-	
-	pushl %edi #2
-	pushl %esi #3
+resetCurrent:
+	pushl %ecx
+	 
+	pushl %edi
+	pushl %esi
 	
 	movl $current, %edi
 	movl $identificator, %esi
@@ -107,8 +105,8 @@ et_resetCurrent:
 	call atoi
 	popl %ebx
 	
-	popl %esi #3
-	popl %edi #2
+	popl %esi
+	popl %edi
 	
 	cmp $0, %eax
 	je currentNr
@@ -118,14 +116,14 @@ et_resetCurrent:
 	je currentOp	
 	
 back_resetCurrent:
-	pushl $strEmpty
+	// curent = ""
+	pushl $strEmpty 
 	pushl $current
 	call strcpy
 	popl %ebx
 	popl %ebx
 
-
-	//SPACE
+	// space
 	pushl $strSpace 
 	pushl $formatPrintf
 	call printf
@@ -133,7 +131,6 @@ back_resetCurrent:
 	popl %ebx
 	
 	popl %ecx #1
-
 	
 	movl $0, indexCurrent
 	movl $0, count
@@ -151,7 +148,7 @@ currentNr:
 	movl $3, %ecx
 	movb (%edi, %ecx, 1), %bl
 	
-	cmp $48, %bl
+	cmp $48, %bl # negative number
 	je currentNr_b2TOb10
 	
 	push $45 # -
@@ -186,7 +183,6 @@ currentNr_b2TOb10_true:
 	incl %ecx
 	jmp currentNr_b2TOb10
 currentNr_b2TOb10_exit:
-	
 	popl %edi
 	popl %ecx
 	popl %ebx
@@ -199,6 +195,7 @@ currentNr_b2TOb10_exit:
 	popl %ebx
 	
 	jmp back_resetCurrent
+	
 currentVar:
 	pushl %eax
 	pushl %ebx
@@ -208,17 +205,17 @@ currentVar:
 	movl $current, %edi
 	movl $4, %ecx
 	movl $0, nrB10
-et_b2TOb10:
+currentVar_b2TOb10:
 	movb (%edi, %ecx, 1), %bl
 	cmp $0, %bl
-	je exit_b2TOb10
+	je currentVar_b2TOb10_exit
 	
 	cmp $49, %bl
-	je true_b2TOb10
+	je currentVar_b2TOb10_1
 	
 	incl %ecx		
-	jmp et_b2TOb10
-true_b2TOb10:
+	jmp currentVar_b2TOb10
+currentVar_b2TOb10_1:
 	pushl %ecx
 
 	movl $11, p
@@ -231,8 +228,8 @@ true_b2TOb10:
 	popl %ecx
 	
 	incl %ecx
-	jmp et_b2TOb10
-exit_b2TOb10:
+	jmp currentVar_b2TOb10
+currentVar_b2TOb10_exit:
 	popl %edi
 	popl %ecx
 	popl %ebx
@@ -244,13 +241,14 @@ exit_b2TOb10:
 	popl %ebx
 	popl %ebx
 	jmp back_resetCurrent
+	
 currentOp:
-	pushl %ecx #1
-	pushl %edi #2
-	pushl %esi #3
+	pushl %ecx 
+	pushl %edi 
+	pushl %esi 
 	
 	movl $current, %edi
-	movl $identificator_op, %esi
+	movl $identOp, %esi
 	mov $9, %ecx	
 	movb (%edi, %ecx, 1), %bl
 	mov $0, %ecx
@@ -264,7 +262,7 @@ currentOp:
 	mov $2, %ecx
 	movb %bl, (%esi, %ecx, 1)
 	
-	pushl $identificator_op
+	pushl $identOp
 	call atoi
 	popl %ebx
 	
@@ -279,10 +277,11 @@ currentOp:
 	cmp $100, %eax
 	je currentOpDIV
 back_currentOp:
-	popl %esi #3
-	popl %edi #2
-	popl %ecx #1
+	popl %esi
+	popl %edi 
+	popl %ecx 
 	jmp back_resetCurrent
+	
 currentOpLET:
 	push $let
 	push $formatPrintf
@@ -333,7 +332,7 @@ cifra_0:
 	addl $4, indexCurrent
 	
 	popl %ecx
-	jmp et_counter
+	jmp counter
 cifra_1:
 	pushl %ecx
 	
@@ -349,7 +348,7 @@ cifra_1:
 	addl $4, indexCurrent
 	
 	popl %ecx
-	jmp et_counter
+	jmp counter
 cifra_2:
 	pushl %ecx
 	
@@ -365,7 +364,7 @@ cifra_2:
 	addl $4, indexCurrent
 	
 	popl %ecx
-	jmp et_counter
+	jmp counter
 cifra_3:
 	pushl %ecx
 	
@@ -381,7 +380,7 @@ cifra_3:
 	addl $4, indexCurrent
 	
 	popl %ecx
-	jmp et_counter
+	jmp counter
 cifra_4:
 	pushl %ecx
 	
@@ -397,7 +396,7 @@ cifra_4:
 	addl $4, indexCurrent
 	
 	popl %ecx
-	jmp et_counter
+	jmp counter
 cifra_5:
 	pushl %ecx
 	
@@ -413,7 +412,7 @@ cifra_5:
 	addl $4, indexCurrent
 	
 	popl %ecx
-	jmp et_counter
+	jmp counter
 cifra_6:
 	pushl %ecx
 	
@@ -429,7 +428,7 @@ cifra_6:
 	addl $4, indexCurrent
 	
 	popl %ecx
-	jmp et_counter
+	jmp counter
 cifra_7:
 	pushl %ecx
 	
@@ -445,7 +444,7 @@ cifra_7:
 	addl $4, indexCurrent
 	
 	popl %ecx
-	jmp et_counter
+	jmp counter
 cifra_8:
 	pushl %ecx
 	
@@ -461,7 +460,7 @@ cifra_8:
 	addl $4, indexCurrent
 	
 	popl %ecx
-	jmp et_counter
+	jmp counter
 cifra_9:
 	pushl %ecx
 	
@@ -477,7 +476,7 @@ cifra_9:
 	addl $4, indexCurrent
 	
 	popl %ecx
-	jmp et_counter
+	jmp counter
 cifra_A:
 	pushl %ecx
 	
@@ -493,7 +492,7 @@ cifra_A:
 	addl $4, indexCurrent
 	
 	popl %ecx
-	jmp et_counter
+	jmp counter
 cifra_B:
 	pushl %ecx
 	
@@ -509,7 +508,7 @@ cifra_B:
 	addl $4, indexCurrent
 	
 	popl %ecx
-	jmp et_counter
+	jmp counter
 cifra_C:
 	pushl %ecx
 	
@@ -525,7 +524,7 @@ cifra_C:
 	addl $4, indexCurrent
 	
 	popl %ecx
-	jmp et_counter
+	jmp counter
 cifra_D:
 	pushl %ecx
 	
@@ -541,7 +540,7 @@ cifra_D:
 	addl $4, indexCurrent
 	
 	popl %ecx
-	jmp et_counter
+	jmp counter
 cifra_E:
 	pushl %ecx
 	
@@ -557,7 +556,7 @@ cifra_E:
 	addl $4, indexCurrent
 	
 	popl %ecx
-	jmp et_counter
+	jmp counter
 cifra_F:
 	pushl %ecx
 	
@@ -573,7 +572,7 @@ cifra_F:
 	addl $4, indexCurrent
 	
 	popl %ecx
-	jmp et_counter
+	jmp counter
 et_exit:
 	pushl $0
 	call fflush
@@ -582,4 +581,3 @@ et_exit:
 	mov $1, %eax
 	xor %ebx, %ebx
 	int $0x80
-
