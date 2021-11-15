@@ -1,6 +1,6 @@
 //cerinta2
 .data
-	str: .space 200
+	str: .space 100
 	formatDec: .asciz "%d\n"
 	chDelim: .asciz " "
 	res: .space 4
