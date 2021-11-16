@@ -2,6 +2,7 @@
 .data
 	str: .space 1000
 	formatDec: .asciz "%d"
+	formatPrintf: .asciz "%s"
 	chDelim: .asciz " "
 	res: .space 4
 	
@@ -50,6 +51,11 @@ et_for:
 	movl res, %edi
 	xor %ecx, %ecx
 	movb (%edi, %ecx, 1), %bl
+	incl %ecx
+	movb (%edi, %ecx, 1), %al
+	
+	cmp $0, %al
+	je et_var
 	
 	cmp $97, %bl
 	je op_add
@@ -59,6 +65,8 @@ et_for:
 	je op_mul
 	cmp $100, %bl
 	je op_div
+	cmp $108, %bl
+	je op_let
 op_add:
 	popl y
 	popl x
@@ -89,9 +97,15 @@ op_div:
 	divl %ebx
 	pushl %eax
 	jmp et_for
+op_let:
+
+	jmp et_for
 et_numar:
 	pushl %eax
-	jmp et_for	
+	jmp et_for
+et_var:
+
+	jmp et_for
 et_exit:
 	popl %eax
 	
