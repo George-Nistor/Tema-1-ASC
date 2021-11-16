@@ -2,12 +2,13 @@
 .data
 	str: .space 1000
 	formatDec: .asciz "%d"
-	formatPrintf: .asciz "%s"
 	chDelim: .asciz " "
 	res: .space 4
 	
 	x: .long 0
 	y: .long 0
+	poz: .long 0
+	var: .long 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 .text
 
 .global main
@@ -23,11 +24,16 @@ main:
 	popl %ebx
 	popl %ebx
 	
+	movl %eax, res
+	
 	pushl %eax
 	call atoi
 	popl %ebx
 	
-	pushl %eax
+	cmp $0, %eax
+	je et_var
+	
+	pushl %eax	
 et_for:
 	pushl $chDelim
 	pushl $0
@@ -98,13 +104,35 @@ op_div:
 	pushl %eax
 	jmp et_for
 op_let:
-
+	popl y
+	popl x
+	movl y, %ebx
+	movl x, %ecx
+	movl %ebx, (%esi, %ecx, 4)
+	 
 	jmp et_for
 et_numar:
 	pushl %eax
 	jmp et_for
 et_var:
-
+	movl res, %edi
+	xor %ecx, %ecx
+	movb (%edi, %ecx, 1), %bl
+	
+	mov %bl, poz
+	sub $97, poz
+	
+	movl $var, %esi
+	movl poz, %ecx
+	movl (%esi, %ecx, 4), %ebx
+		
+	cmp $0, %ebx
+	jne et_varExist
+	
+	pushl poz
+	jmp et_for
+et_varExist:
+	pushl (%esi, %ecx, 4)
 	jmp et_for
 et_exit:
 	popl %eax
