@@ -263,37 +263,37 @@
 1320 CORECT
 
 48 37 15 16 add div sub 
-47 CORECT
+47 CORECT x2
 
 50 26 sub 1 19 7 40 22 add 2 add div 20 mul 20 15 50 34 46 add add add add mul mul add mul 
-24 CORECT
+24 CORECT x2
 
 9 4 15 5 div sub div 30 mul 
-270 CORECT
+270 CORECT x2
 
 50 13 add 1 50 14 15 17 30 add add 1 39 36 31 14 sub 17 40 mul 14 div div sub mul mul add mul div sub add 
-64 CORECT
+64 CORECT x2
 
 50 3 add 13 mul 
-689 CORECT
+689 CORECT x2
 
 19 34 add 4 sub 1 div 8 46 add add 37 10 add 35 33 sub sub sub 
-58 CORECT
+58 CORECT x2
 
 37 44 49 14 40 div 31 17 mul 5 27 28 39 div mul mul mul add sub mul add 
 2193 CORECT
 
 14 13 10 div 30 24 47 46 16 27 12 5 41 18 add 49 mul 19 49 6 div mul add add add add mul add add div mul mul add 
-14 CORECT
+14 CORECT x2
 
 8 1 add 
-9 CORECT
+9 CORECT x2
 
 41 19 mul 9 18 div sub 
-779 CORECT
+779 CORECT x2
 
 41 44 15 mul add 3 sub 6 29 mul add 36 sub 39 div 36 30 11 3 mul 4 21 div sub 18 27 30 1 12 46 add 18 add add div mul sub mul mul mul div 
-0 CORECT
+0 CORECT x2
 
 32 27 18 16 31 13 15 26 add 14 43 div 39 div 34 div 28 35 30 12 sub 25 37 div add mul 8 41 add div add mul add mul add add add mul add 
 16178 CORECT

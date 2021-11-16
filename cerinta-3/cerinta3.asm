@@ -1,14 +1,15 @@
 //cerinta3
 .data
+	x: .space 4
+	y: .space 4
+	poz: .space 4
+	var: .long 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+	
 	str: .space 1000
-	formatDec: .asciz "%d"
-	chDelim: .asciz " "
 	res: .space 4
 	
-	x: .long 0
-	y: .long 0
-	poz: .long 0
-	var: .long 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+	formatDec: .asciz "%d"
+	chDelim: .asciz " "
 .text
 
 .global main

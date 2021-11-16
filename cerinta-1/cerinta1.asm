@@ -1,13 +1,19 @@
 //cerinta1
 .data
-	input: .space 100
+	input: .space 1000
 	current: .space 15
+		
+	identificator: .space 10
+	identOp: .space 10
+	indexCurrent: .space 10
+	count: .long 0
+	nrB10: .space 4
+	p: .long 0
 	
 	strEmpty: .asciz ""
 	strSpace: .asciz " "
-
-	formatScanf: .asciz "%s"
 	
+	formatScanf: .asciz "%s"
 	formatChart: .asciz "%c"
 	formatPrintf: .asciz "%s"
 	formatDec: .asciz "%d"
@@ -17,14 +23,6 @@
 	sub: .asciz "sub"
 	mul: .asciz "mul"
 	div: .asciz "div"
-	
-	
-	identificator: .space 3
-	identOp: .space 5
-	indexCurrent: .long 0
-	count: .long 0
-	nrB10: .long 0
-	p: .long 0
 .text
 
 .global main

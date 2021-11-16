@@ -1,12 +1,13 @@
 //cerinta2
 .data
-	str: .space 1000
-	formatDec: .asciz "%d"
-	chDelim: .asciz " "
+	x: .space 4
+	y: .space 4
 	res: .space 4
 	
-	x: .long 0
-	y: .long 0
+	str: .space 1000
+	
+	formatDec: .asciz "%d"
+	chDelim: .asciz " "
 .text
 
 .global main
