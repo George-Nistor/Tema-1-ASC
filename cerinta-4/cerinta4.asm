@@ -1,19 +1,20 @@
 //cerinta4
 .data
+	negativeOne: .long -1
+	
 	v: .space 400 # => 4*100 = 400 elemente
 	nrLin: .space 4
 	nrCol: .space 4
 	n: .space 4 # n = nrLin*nrCol
+	i: .long 0
 	elem: .space 4
 	
 	opNr: .space 4
-	
 	temp: .space 4
+	
 	sformatScanf: .asciz "%s"
 	dformatScanf: .asciz "%d"
 	dformatPrintf: .asciz "%d "
-	
-	sformatPrintf: .asciz "%s "
 .text
 
 .global main
@@ -119,7 +120,7 @@ op_add:
 		
 	movl (%edi, %ecx, 4), %eax
 	add opNr, %eax
-	movl  %eax, (%edi, %ecx, 4)
+	movl %eax, (%edi, %ecx, 4)
 	
 	incl %ecx
 	jmp op_add
@@ -129,20 +130,95 @@ op_sub:
 		
 	movl (%edi, %ecx, 4), %eax
 	sub opNr, %eax
-	movl  %eax, (%edi, %ecx, 4)
+	movl %eax, (%edi, %ecx, 4)
 	
 	incl %ecx
 	jmp op_sub
 op_mul:
-
+	cmp n, %ecx
+	je et_output
+		
+	movl (%edi, %ecx, 4), %eax
+	imull opNr
+	movl %eax, (%edi, %ecx, 4)
+	
+	incl %ecx
+	jmp op_mul
 op_div:
-
+	cmp n, %ecx
+	je et_output
+		
+	pushl opNr
+	
+	movl (%edi, %ecx, 4), %eax
+	cmp $0, %eax
+	jl op_divNeg
+	
+op_divBack:
+	xor %edx, %edx	
+	idivl opNr
+	movl %eax, (%edi, %ecx, 4)
+	
+	popl opNr
+	
+	incl %ecx
+	jmp op_div
+op_divNeg:
+	mull negativeOne
+	pushl %eax
+	
+	movl opNr, %eax
+	mull negativeOne
+	movl %eax, opNr 
+	
+	popl %eax
+	
+	jmp op_divBack 
 op_rot90d:
-
-	jmp et_output
+	pushl nrCol
+	pushl $dformatPrintf
+	call printf
+	popl %ebx
+	popl %ebx
+	
+	pushl nrLin
+	pushl $dformatPrintf
+	call printf
+	popl %ebx
+	popl %ebx
+	
+	for_col:
+		movl i, %eax
+		cmp nrCol, %eax
+		je et_exit
+		
+		movl nrLin, %ecx
+		for_lin:
+			pushl %ecx
+			
+			decl %ecx
+			
+			movl nrCol, %eax
+			mull %ecx
+			add i, %eax
+			
+			movl %eax, %ecx
+			movl $v, %edi	
+			movl (%edi, %ecx, 4), %eax
+	
+			pushl %eax
+			pushl $dformatPrintf
+			call printf
+			popl %ebx
+			popl %ebx			
+							
+			popl %ecx			
+			loop for_lin		
+		incl i
+		jmp for_col
 et_output:
 	xor %ecx, %ecx
-	mov $v, %edi
+	movl $v, %edi
 	
 	pushl nrLin
 	pushl $dformatPrintf
