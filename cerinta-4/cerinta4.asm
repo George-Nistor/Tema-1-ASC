@@ -14,6 +14,7 @@
 	
 	sformatScanf: .asciz "%s"
 	dformatScanf: .asciz "%d"
+	formatChart: .asciz "%c"
 	dformatPrintf: .asciz "%d "
 .text
 
@@ -251,8 +252,10 @@ for_output:
 	incl %ecx
 	jmp for_output
 et_exit:
-	pushl $0
-	call fflush
+	push $10 # \n
+	push $formatChart
+	call printf
+	popl %ebx
 	popl %ebx
 	
 	movl $1, %eax

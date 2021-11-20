@@ -8,6 +8,7 @@
 	str: .space 1000
 	res: .space 4
 	
+	formatChart: .asciz "%c"
 	formatDec: .asciz "%d"
 	chDelim: .asciz " "
 .text
@@ -144,8 +145,10 @@ et_exit:
 	popl %ebx
 	popl %ebx
 	
-	pushl $0
-	call fflush
+	push $10 # \n
+	push $formatChart
+	call printf
+	popl %ebx
 	popl %ebx
 
 	mov $1, %eax

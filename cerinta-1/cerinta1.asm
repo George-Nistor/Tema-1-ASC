@@ -572,8 +572,10 @@ cifra_F:
 	popl %ecx
 	jmp counter
 et_exit:
-	pushl $0
-	call fflush
+	push $10 # \n
+	push $formatChart
+	call printf
+	popl %ebx
 	popl %ebx
 	
 	mov $1, %eax
