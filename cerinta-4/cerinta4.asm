@@ -2,7 +2,7 @@
 .data
 	negativeOne: .long -1
 	
-	v: .space 400 # => 4*100 = 400 elemente
+	v: .space 2000
 	nrLin: .space 4
 	nrCol: .space 4
 	n: .space 4 # n = nrLin*nrCol
